@@ -1,20 +1,31 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
+/* eslint-disable react/react-in-jsx-scope */
+import {useContext} from 'react';
 import {Image, ImageStyle, StyleProp} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 
 interface Props {
   style?: StyleProp<ImageStyle>;
 }
-export const PokeballBG = ({style}: Props) => {
+
+export const PokeballBg = ({style}: Props) => {
   const {isDark} = useContext(ThemeContext);
+
   const pokeballImg = isDark
     ? require('../../../assets/pokeball-light.png')
     : require('../../../assets/pokeball-dark.png');
+
   return (
     <Image
       source={pokeballImg}
-      style={[{width: 300, height: 300, opacity: 0.3}, style]}
+      style={[
+        {
+          width: 300,
+          height: 300,
+          opacity: 0.3,
+        },
+        style,
+      ]}
     />
   );
 };

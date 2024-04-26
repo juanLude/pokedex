@@ -1,11 +1,12 @@
+/* eslint-disable curly */
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   Animated,
   ImageStyle,
   StyleProp,
-  Text,
   View,
 } from 'react-native';
 import {useAnimation} from '../../hooks/useAnimation';
@@ -18,6 +19,17 @@ interface Props {
 export const FadeInImage = ({uri, style}: Props) => {
   const {animatedOpacity, fadeIn} = useAnimation();
   const [isLoading, setIsLoading] = useState(true);
+  const isDisposed = useRef(false);
+  useEffect(() => {
+    return () => {
+      isDisposed.current = true;
+    };
+  }, []);
+  const onLoadEnd = () => {
+    if (isDisposed.current) return;
+    fadeIn({});
+    setIsLoading(false);
+  };
 
   return (
     <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -31,10 +43,7 @@ export const FadeInImage = ({uri, style}: Props) => {
 
       <Animated.Image
         source={{uri}}
-        onLoadEnd={() => {
-          fadeIn({});
-          setIsLoading(false);
-        }}
+        onLoadEnd={onLoadEnd}
         style={[style, {opacity: animatedOpacity}]}
       />
     </View>
