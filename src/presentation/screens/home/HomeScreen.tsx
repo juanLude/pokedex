@@ -46,7 +46,7 @@ export const HomeScreen = () => {
         keyExtractor={(pokemon, index) => `${pokemon.id}-${index}`}
         numColumns={2}
         style={{paddingTop: top + 20}}
-        ListHeaderComponent={() => <Text variant="displayMedium">Pokédex</Text>}
+        ListHeaderComponent={() => <Text variant="displayMedium">Pokedex</Text>}
         renderItem={({item}) => <PokemonCard pokemon={item} />}
         onEndReachedThreshold={0.6}
         onEndReached={() => fetchNextPage()}
