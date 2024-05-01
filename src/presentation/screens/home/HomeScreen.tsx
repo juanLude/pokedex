@@ -13,6 +13,7 @@ import {PokemonCard} from '../../components/pokemons/PokemonCard';
 
 export const HomeScreen = () => {
   const {top} = useSafeAreaInsets();
+
   const queryClient = useQueryClient();
 
   //* Esta es la forma tradicional de una petición http
