@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable curly */
@@ -6,8 +7,7 @@ import React, {useMemo, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {globalTheme} from '../../../config/theme/global-theme';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {ActivityIndicator, Text, TextInput} from 'react-native-paper';
-import {Pokemon} from '../../../domain/entities/pokemon';
+import {ActivityIndicator, TextInput} from 'react-native-paper';
 import {PokemonCard} from '../../components/pokemons/PokemonCard';
 import {useQuery} from '@tanstack/react-query';
 import {
@@ -15,10 +15,12 @@ import {
   getPokemonsByIds,
 } from '../../../actions/pokemons';
 import {FullScreenLoader} from '../../components/ui/FullScreenLoader';
+import {useDebounceValue} from '../../hooks/useDebounceValue';
 
 export const SearchScreen = () => {
   const {top} = useSafeAreaInsets();
   const [term, setTerm] = useState('');
+  const debouncedValue = useDebounceValue(term);
   const {isLoading, data: pokemonNameList = []} = useQuery({
     queryKey: ['pokemons', 'all'],
     queryFn: () => getPokemonNamesWithId(),
@@ -26,18 +28,18 @@ export const SearchScreen = () => {
 
   const pokemonNameIdList = useMemo(() => {
     // check if it is a Number
-    if (!isNaN(Number(term))) {
+    if (!isNaN(Number(debouncedValue))) {
       const pokemon = pokemonNameList.find(
-        pokemon => pokemon.id === Number(term),
+        pokemon => pokemon.id === Number(debouncedValue),
       );
       return pokemon ? [pokemon] : [];
     }
-    if (term.length === 0) return [];
-    if (term.length < 3) return [];
+    if (debouncedValue.length === 0) return [];
+    if (debouncedValue.length < 3) return [];
     return pokemonNameList.filter(pokemon =>
-      pokemon.name.includes(term.toLocaleLowerCase()),
+      pokemon.name.includes(debouncedValue.toLocaleLowerCase()),
     );
-  }, [term]);
+  }, [debouncedValue]);
 
   if (isLoading) {
     return <FullScreenLoader />;
