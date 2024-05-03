@@ -1,3 +1,6 @@
+<div style="text-align: center;">
+<img width="662" alt="showcase" src="https://github.com/juanLude/pokedex/assets/78500312/f05c5f08-0579-4c2b-8a1b-ba4b6f62531d">
+</div>
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
